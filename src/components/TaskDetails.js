@@ -5,35 +5,25 @@ import Button from './Button'
 const TaskDetails = () => {
 	const [loading, setLoading] = useState(true)
 	const [task, setTask] = useState({})
-	// const [error, setError] = useState(null)
 
 	const params = useParams()
 	const navigate = useNavigate()
 
 	useEffect(() => {
-		let isSubscribed = true
 		const fetchTask = async () => {
 			const res = await fetch(`http://localhost:5000/tasks/${params.id}`)
 			const data = await res.json()
 
 			if (res.status === 404) {
 				navigate('/')
-			}
-
-			if (isSubscribed) {
+			} else {
 				setTask(data)
 				setLoading(false)
 			}
 		}
-		
+
 		fetchTask()
-
-		return () => isSubscribed = false
-	})
-
-	// if (error) {
-	// 	return <Navigate to='/' />
-	// }
+	}, [navigate, params]);
 
 	return loading ? (
 		<h3>Loading...</h3>
